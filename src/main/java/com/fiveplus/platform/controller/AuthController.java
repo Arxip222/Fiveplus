@@ -5,12 +5,7 @@ import com.fiveplus.platform.model.LoginData;
 import com.fiveplus.platform.model.User;
 import com.fiveplus.platform.repository.RoleRepo;
 import com.fiveplus.platform.repository.UserRepo;
-import com.fiveplus.platform.service.UserDetailsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,18 +34,18 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<HttpStatus> login(@RequestBody LoginData loginDto){
+    public LoginData login(@RequestBody LoginData loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsername(), loginDto.getPassword()));
+                loginDto.getEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+        return loginDto;
     }
 
     @PostMapping("/register")
     public User createUser(@RequestBody LoginData loginDto){
         User newUser = new User();
-        newUser.setUsername(loginDto.getUsername());
+        newUser.setEmail(loginDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(loginDto.getPassword()));
         return userRepository.save(newUser);
     }

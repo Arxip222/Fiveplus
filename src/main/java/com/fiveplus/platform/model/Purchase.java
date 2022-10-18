@@ -7,15 +7,15 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "purchases")
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-public class Role {
+public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(length = 60)
-    private String name;
+    private int quantity;
+    private LessonType type;
 }
