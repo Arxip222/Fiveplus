@@ -1,5 +1,6 @@
 package com.fiveplus.platform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fiveplus.platform.model.Application;
 import com.fiveplus.platform.model.User;
 import lombok.Getter;
@@ -18,8 +19,9 @@ public class Child {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private User parent;

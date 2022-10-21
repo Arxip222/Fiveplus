@@ -5,6 +5,8 @@ import com.fiveplus.platform.model.LoginData;
 import com.fiveplus.platform.model.User;
 import com.fiveplus.platform.repository.RoleRepo;
 import com.fiveplus.platform.repository.UserRepo;
+import com.fiveplus.platform.service.RoleService;
+import com.fiveplus.platform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,28 +27,25 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserRepo userRepository;
+    private UserService userService;
 
-    @Autowired
-    private RoleRepo roleRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
-    public LoginData login(@RequestBody LoginData loginDto){
+    public User login(@RequestBody LoginData loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return loginDto;
+        return userService.getCurrentUsr();
     }
 
-    @PostMapping("/register")
-    public User createUser(@RequestBody LoginData loginDto){
-        User newUser = new User();
-        newUser.setEmail(loginDto.getEmail());
-        newUser.setPassword(passwordEncoder.encode(loginDto.getPassword()));
-        return userRepository.save(newUser);
+    @PostMapping("/registerParent")
+    public User createUserParent(@RequestBody LoginData loginDto){
+        return userService.registerUsrParent(loginDto);
+    }
+
+    @PostMapping("/registerTeacher")
+    public User createUserTeacher(@RequestBody LoginData loginDto){
+        return userService.registerUsrTeacher(loginDto);
     }
 }

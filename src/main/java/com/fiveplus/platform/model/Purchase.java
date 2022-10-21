@@ -15,7 +15,8 @@ public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private int quantity;
+    @Enumerated(EnumType.STRING)
     private LessonType type;
 }
