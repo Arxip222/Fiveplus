@@ -25,4 +25,9 @@ public class ChildController {
     public HttpEntity<Child> editChild(@RequestBody Child child, @PathVariable("id") Long id){
         return childService.editChild(child, id);
     }
+
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<Child> getChildById(@PathVariable("id") Long id){
+        return childService.getChildById(id);
+    }
 }

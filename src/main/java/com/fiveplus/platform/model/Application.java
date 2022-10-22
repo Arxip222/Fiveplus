@@ -23,7 +23,6 @@ public class Application {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private User parent;
-    private String photo;
     private Date start_less;
     private Date finish_less;
     private int dlit;

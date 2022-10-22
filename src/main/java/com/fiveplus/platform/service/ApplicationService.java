@@ -1,17 +1,12 @@
 package com.fiveplus.platform.service;
 
 
-import com.fiveplus.platform.exception.ResourceNotFoundException;
 import com.fiveplus.platform.model.Application;
-import com.fiveplus.platform.model.Child;
 import com.fiveplus.platform.repository.ApplicationRepo;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.nio.file.attribute.UserPrincipal;
 
 @Service
 public class ApplicationService {
@@ -24,7 +19,7 @@ public class ApplicationService {
 
     public ResponseEntity<Application> addApplication(Application application) {
         applicationRepo.save(application);
-        return new ResponseEntity<Application>(HttpStatus.OK);
+        return new ResponseEntity<Application>(application, HttpStatus.OK);
     }
 
     public ResponseEntity<Application> editApplication(Application application, Long id) {
@@ -39,5 +34,17 @@ public class ApplicationService {
         }catch (Exception e){
             return new ResponseEntity<Application>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    public ResponseEntity<Application> getApplicationById(Long id){
+        try {
+            return new ResponseEntity<Application>(applicationRepo.findById(id).get(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<Application>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public void deleteApplicationById(Long id){
+        applicationRepo.delete(applicationRepo.findById(id).orElseThrow());
     }
 }

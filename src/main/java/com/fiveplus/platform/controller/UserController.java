@@ -13,13 +13,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PutMapping("/updateUser/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Long id){
         return userService.updateUsr(user, id);
     }
 
-    @GetMapping("/getCurrentUser")
+    @GetMapping("/getCurrent")
     public User getCurrentUser(){
         return userService.getCurrentUsr();
+    }
+
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
+        return userService.getUserById(id);
     }
 }

@@ -1,6 +1,5 @@
 package com.fiveplus.platform.service;
 
-import com.fiveplus.platform.exception.ResourceNotFoundException;
 import com.fiveplus.platform.model.LoginData;
 import com.fiveplus.platform.model.Role;
 import com.fiveplus.platform.model.User;
@@ -21,23 +20,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepo userRepository;
-
-    @Autowired
-    private RoleService roleService;
-
+    private final UserRepo userRepository;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(@Lazy PasswordEncoder passwordEncoder) {
+    public UserService(UserRepo userRepository, RoleService roleService, @Lazy PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -49,7 +45,7 @@ public class UserService implements UserDetailsService {
 
 
 
-    private Collection< ? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles){
+    private Collection< ? extends GrantedAuthority> mapRolesToAuthorities(List<Role> roles){
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
@@ -90,6 +86,14 @@ public class UserService implements UserDetailsService {
         newUser.setEmail(loginDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(loginDto.getPassword()));
         return userRepository.save(newUser);
+    }
+
+    public ResponseEntity<User> getUserById(Long id){
+        try {
+            return new ResponseEntity<User>(userRepository.findById(id).get(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

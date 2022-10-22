@@ -3,16 +3,12 @@ package com.fiveplus.platform.controller;
 
 import com.fiveplus.platform.model.LoginData;
 import com.fiveplus.platform.model.User;
-import com.fiveplus.platform.repository.RoleRepo;
-import com.fiveplus.platform.repository.UserRepo;
-import com.fiveplus.platform.service.RoleService;
 import com.fiveplus.platform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

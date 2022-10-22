@@ -30,4 +30,12 @@ public class PurchaseService {
             return new ResponseEntity<Purchase>(HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<Purchase> getPurchaseById(Long id){
+        try {
+            return new ResponseEntity<Purchase>(purchaseRepo.findById(id).get(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<Purchase>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

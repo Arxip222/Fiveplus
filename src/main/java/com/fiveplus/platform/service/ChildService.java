@@ -2,7 +2,6 @@ package com.fiveplus.platform.service;
 
 
 import com.fiveplus.platform.model.Child;
-import com.fiveplus.platform.model.Purchase;
 import com.fiveplus.platform.repository.ChildRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +31,14 @@ public class ChildService {
             child1.setPhoto(child.getPhoto());
             childRepo.save(child1);
             return new ResponseEntity<Child>(child1, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<Child>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Child> getChildById(Long id){
+        try {
+            return new ResponseEntity<Child>(childRepo.findById(id).get(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<Child>(HttpStatus.NOT_FOUND);
         }
