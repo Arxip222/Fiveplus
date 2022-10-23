@@ -4,6 +4,7 @@ import com.fiveplus.platform.model.User;
 import com.fiveplus.platform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,4 +28,5 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
         return userService.getUserById(id);
     }
+
 }

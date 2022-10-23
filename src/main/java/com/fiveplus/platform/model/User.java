@@ -31,6 +31,8 @@ public class User {
     @OneToMany(mappedBy="parent")
     private List<Child> children;
     private boolean online;
+    @OneToMany(mappedBy = "author")
+    private List<Question> questions;
     @ManyToMany
     @JoinTable(
             name = "users_roles",

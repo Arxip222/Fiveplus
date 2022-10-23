@@ -2,11 +2,14 @@ package com.fiveplus.platform.service;
 
 
 import com.fiveplus.platform.model.Application;
+import com.fiveplus.platform.model.User;
 import com.fiveplus.platform.repository.ApplicationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ApplicationService {
@@ -17,7 +20,9 @@ public class ApplicationService {
     @Autowired
     UserService userService;
 
-    public ResponseEntity<Application> addApplication(Application application) {
+    public ResponseEntity<Application> addMomentApplication(Application application) {
+        application.setFree(true);
+        application.setParent(userService.getCurrentUsr());
         applicationRepo.save(application);
         return new ResponseEntity<Application>(application, HttpStatus.OK);
     }
@@ -46,5 +51,30 @@ public class ApplicationService {
 
     public void deleteApplicationById(Long id){
         applicationRepo.delete(applicationRepo.findById(id).orElseThrow());
+    }
+
+    public ResponseEntity<Application> addTableApplication(Application application){
+        application.setParent(userService.getCurrentUsr());
+        applicationRepo.save(application);
+        return new ResponseEntity<Application>(application, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Application>> getByUserId(Long id) {
+        User parent = userService.getUserById(id).getBody();
+        if (parent != null) {
+            return new ResponseEntity<List<Application>>(applicationRepo.findByParent(parent), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Application> stopLesson(Long id) {
+        try {
+            Application lesson = applicationRepo.findById(id).get();
+            lesson.setFinished(true);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

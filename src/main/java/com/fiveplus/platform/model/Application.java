@@ -25,13 +25,14 @@ public class Application {
     private User parent;
     private Date start_less;
     private Date finish_less;
-    private int dlit;
+    private int dlitT;
+    private int dlitP;
     private LessonType type;
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private User teacher;
     private int teach_receive;
     private int ostatok_min;
-    private boolean free;
+    private boolean free;//Table
     private boolean finished;
 }

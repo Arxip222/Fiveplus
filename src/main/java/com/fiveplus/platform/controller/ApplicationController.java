@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/applications")
 public class ApplicationController {
@@ -14,9 +16,9 @@ public class ApplicationController {
     @Autowired
     ApplicationService applicationService;
 
-    @PostMapping("/addApplications")
-    public ResponseEntity<Application> addApplication(@RequestBody Application application) {
-        return applicationService.addApplication(application);
+    @PostMapping("/addTableApplication")
+    public ResponseEntity<Application> addTableApplication(@RequestBody Application application) {
+        return applicationService.addTableApplication(application);
     }
 
     @PutMapping("/editApplication/{id}")
@@ -29,6 +31,11 @@ public class ApplicationController {
         return applicationService.getApplicationById(id);
     }
 
+    @GetMapping("/getByUserId/{id}")
+    public ResponseEntity<List<Application>> getByUserId(@PathVariable("id") Long id){
+        return applicationService.getByUserId(id);
+    }
+
     @DeleteMapping("/deleteById/{id}")
     public ResponseEntity<Application> deleteApplicationById(@PathVariable ("id") Long id){
         try {
@@ -38,6 +45,16 @@ public class ApplicationController {
         catch (Exception e){
             return new ResponseEntity<Application>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/addMomentApplication")
+    public ResponseEntity<Application> addMomentApplication(@RequestBody Application application){
+        return applicationService.addMomentApplication(application);
+    }
+
+    @PutMapping("/stopLesson/{id}")
+    public ResponseEntity<Application> stopLesson(@PathVariable Long id){
+           return applicationService.stopLesson(id);
     }
 }
 

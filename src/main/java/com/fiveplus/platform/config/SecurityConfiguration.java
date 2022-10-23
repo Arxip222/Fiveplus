@@ -33,6 +33,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signin", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .logout()
+                .and()
                 .httpBasic();
     }
 

@@ -44,4 +44,6 @@ public class AuthController {
     public User createUserTeacher(@RequestBody LoginData loginDto){
         return userService.registerUsrTeacher(loginDto);
     }
+
+    //Для выхода из аккаунта используется get запрос к /logout
 }

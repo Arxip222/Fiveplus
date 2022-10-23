@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/children")
 public class ChildController {
@@ -29,5 +31,10 @@ public class ChildController {
     @GetMapping("/getById/{id}")
     public ResponseEntity<Child> getChildById(@PathVariable("id") Long id){
         return childService.getChildById(id);
+    }
+
+    @GetMapping("/getByParentId/{id}")
+    public ResponseEntity<List<Child>> getByParenId(@PathVariable("id") Long id){
+        return childService.getChildrenByParentId(id);
     }
 }
