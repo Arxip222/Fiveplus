@@ -28,6 +28,9 @@ public class Application {
     private int dlitT;
     private int dlitP;
     private LessonType type;
+    @OneToOne
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private User teacher;

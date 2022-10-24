@@ -1,8 +1,6 @@
 package com.fiveplus.platform.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fiveplus.platform.model.Application;
-import com.fiveplus.platform.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
