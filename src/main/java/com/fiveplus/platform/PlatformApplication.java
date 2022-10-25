@@ -1,19 +1,13 @@
 package com.fiveplus.platform;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class PlatformApplication {
 
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
 	public static void main(String[] args) {
 		SpringApplication.run(PlatformApplication.class, args);
-	}
+	}//Swagger URL: http://localhost:8080/swagger-ui/index.html#/
 
 }
