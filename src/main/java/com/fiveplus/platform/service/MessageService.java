@@ -20,14 +20,14 @@ public class MessageService {
     MessageRepo messageRepo;
 
     @Autowired
-    UserService userService;
+    PublicService publicService;
 
     @Autowired
     ChatRepo chatRepo;
 
 
     public ResponseEntity<Message> saveMessage(Message message) {
-        message.setCreator(userService.getCurrentUsr());
+        message.setCreator(publicService.getCurrentUsr());
         //message.setChat(chatRepo.findById(3L).get());
         messageRepo.save(message);
         return new ResponseEntity<Message>(message, HttpStatus.OK);

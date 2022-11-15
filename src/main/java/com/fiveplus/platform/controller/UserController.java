@@ -1,10 +1,11 @@
 package com.fiveplus.platform.controller;
 
+import com.fiveplus.platform.helpModels.StartProfile;
 import com.fiveplus.platform.model.User;
+import com.fiveplus.platform.service.PublicService;
 import com.fiveplus.platform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,15 +14,22 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    PublicService publicService;
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Long id){
-        return userService.updateUsr(user, id);
+    @PutMapping("/startUpdateForm/{id}")
+    public ResponseEntity<User> startUpdateUser(@RequestBody StartProfile data, @PathVariable("id") Long id){
+        return userService.startUpdateUsr(data, id);
+    }
+
+    @PutMapping("/editProfile/{id}")
+    public ResponseEntity<User> editUpdateUser(@RequestBody User user, @PathVariable("id") Long id){
+        return userService.editProfile(user, id);
     }
 
     @GetMapping("/getCurrent")
     public User getCurrentUser(){
-        return userService.getCurrentUsr();
+        return publicService.getCurrentUsr();
     }
 
     @GetMapping("/getById/{id}")

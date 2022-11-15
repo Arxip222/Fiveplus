@@ -1,6 +1,7 @@
 package com.fiveplus.platform.controller;
 
 import com.fiveplus.platform.model.Application;
+import com.fiveplus.platform.model.LessonType;
 import com.fiveplus.platform.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class ApplicationController {
     }
 
     @PutMapping("/editApplication/{id}")
-    public ResponseEntity<Application> editApplications(@RequestBody Application application, @PathVariable("id") Long id) {
+    public ResponseEntity<Application> editMomentApplications(@RequestBody Application application, @PathVariable("id") Long id) {
         return applicationService.editApplication(application, id);
     }
 
@@ -47,9 +48,9 @@ public class ApplicationController {
         }
     }
 
-    @PostMapping("/addMomentApplication")
-    public ResponseEntity<Application> addMomentApplication(@RequestBody Application application){
-        return applicationService.addMomentApplication(application);
+    @PostMapping("/addMomentApplication/{child_id}/{bought_variant}")
+    public ResponseEntity<Application> addMomentApplication(@RequestBody Application application, @PathVariable("child_id") Long child_id, @PathVariable("bought_variant")LessonType type){
+        return applicationService.addMomentApplication(application, child_id, type);
     }
 
     @PutMapping("/stopLesson/{id}")

@@ -1,5 +1,5 @@
 package com.fiveplus.platform.model;
 
 public enum LessonType {
-    HOMEWORK_DAY, PRODLENKA, OST_MIN
+    HOMEWORK_DAY, NACHALKA, OST_MIN
 }

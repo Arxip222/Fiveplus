@@ -19,12 +19,12 @@ public class ChatService {
     ChatRepo chatRepo;
 
     @Autowired
-    UserService userService;
+    PublicService publicService;
 
 
     public ResponseEntity<Chat> saveChat(Chat chat) {
         List<User> users = new ArrayList<>();
-        users.add(userService.getCurrentUsr());
+        users.add(publicService.getCurrentUsr());
         chat.setUsers(users);
         chatRepo.save(chat);
         return new ResponseEntity<Chat>(chat, HttpStatus.OK);

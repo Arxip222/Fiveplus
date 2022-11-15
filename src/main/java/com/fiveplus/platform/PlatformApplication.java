@@ -1,5 +1,6 @@
 package com.fiveplus.platform;
 
+import com.fiveplus.platform.model.Purchase;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

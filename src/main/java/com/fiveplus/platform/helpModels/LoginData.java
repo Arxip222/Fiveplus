@@ -1,4 +1,4 @@
-package com.fiveplus.platform.model;
+package com.fiveplus.platform.helpModels;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

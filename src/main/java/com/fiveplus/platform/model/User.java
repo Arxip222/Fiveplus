@@ -1,5 +1,6 @@
 package com.fiveplus.platform.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class User {
@@ -26,6 +28,9 @@ public class User {
     private String password;
     @OneToMany(mappedBy="parent")
     private List<Child> children;
+    @OneToMany(mappedBy="owner")
+    private List<Purchase> purchases;
+    private String image;
     private boolean online;
     @OneToMany(mappedBy = "author")
     private List<Question> questions;

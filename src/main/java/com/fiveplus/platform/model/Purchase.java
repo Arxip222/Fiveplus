@@ -1,15 +1,13 @@
 package com.fiveplus.platform.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "purchases")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Purchase {
@@ -20,4 +18,13 @@ public class Purchase {
     private int quantity;
     @Enumerated(EnumType.STRING)
     private LessonType type;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    public Purchase(int quantity, LessonType type, User owner) {
+        this.quantity=quantity;
+        this.type=type;
+        this.owner=owner;
+    }
 }

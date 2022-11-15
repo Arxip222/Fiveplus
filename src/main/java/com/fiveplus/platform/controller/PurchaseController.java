@@ -1,11 +1,14 @@
 package com.fiveplus.platform.controller;
 
 
+import com.fiveplus.platform.model.Child;
 import com.fiveplus.platform.model.Purchase;
 import com.fiveplus.platform.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/purchases")
@@ -27,5 +30,10 @@ public class PurchaseController {
     @GetMapping("/getById/{id}")
     public ResponseEntity<Purchase> getPurchaseById(@PathVariable("id") Long id) {
         return purchaseService.getPurchaseById(id);
+    }
+
+    @GetMapping("/getByParentId/{id}")
+    public ResponseEntity<List<Purchase>> getByParenId(@PathVariable("id") Long id){
+        return purchaseService.getPurchaseByParentId(id);
     }
 }

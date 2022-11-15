@@ -1,7 +1,9 @@
 package com.fiveplus.platform.service;
 
 
+import com.fiveplus.platform.utils.TypeConvertor;
 import com.fiveplus.platform.model.Application;
+import com.fiveplus.platform.model.LessonType;
 import com.fiveplus.platform.model.User;
 import com.fiveplus.platform.repository.ApplicationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,20 @@ public class ApplicationService {
 
     @Autowired
     UserService userService;
+    @Autowired
+    PublicService publicService;
 
-    public ResponseEntity<Application> addMomentApplication(Application application) {
+    @Autowired
+    ChildService childService;
+
+    public ResponseEntity<Application> addMomentApplication(Application application, Long child_id, LessonType type) {
         application.setFree(true);
-        application.setParent(userService.getCurrentUsr());
+        application.setParent(publicService.getCurrentUsr());
+        application.setFinished(false);
+        application.setChild(childService.getChildById(child_id).getBody());
+        application.setDlitT(application.getDlitT());
+        TypeConvertor convertor = new TypeConvertor();
+        application.setType(convertor.convertType(type));
         applicationRepo.save(application);
         return new ResponseEntity<Application>(application, HttpStatus.OK);
     }
@@ -33,7 +45,7 @@ public class ApplicationService {
             application1.setFinish_less(application.getFinish_less());
             application1.setFree(application.isFree());
             application1.setChild(application.getChild());
-            application1.setParent(userService.getCurrentUsr());
+            application1.setParent(publicService.getCurrentUsr());
             applicationRepo.save(application1);
             return new ResponseEntity<Application>(application1, HttpStatus.OK);
         }catch (Exception e){
@@ -54,7 +66,7 @@ public class ApplicationService {
     }
 
     public ResponseEntity<Application> addTableApplication(Application application){
-        application.setParent(userService.getCurrentUsr());
+        application.setParent(publicService.getCurrentUsr());
         applicationRepo.save(application);
         return new ResponseEntity<Application>(application, HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package com.fiveplus.platform.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Message {

@@ -1,8 +1,9 @@
 package com.fiveplus.platform.controller;
 
 
-import com.fiveplus.platform.model.LoginData;
+import com.fiveplus.platform.helpModels.LoginData;
 import com.fiveplus.platform.model.User;
+import com.fiveplus.platform.service.PublicService;
 import com.fiveplus.platform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,8 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private PublicService publicService;
 
 
     @PostMapping("/signin")
@@ -32,7 +35,7 @@ public class AuthController {
                 loginDto.getEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return userService.getCurrentUsr();
+        return publicService.getCurrentUsr();
     }
 
     @PostMapping("/registerParent")

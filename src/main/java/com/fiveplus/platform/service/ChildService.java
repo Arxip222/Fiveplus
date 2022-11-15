@@ -19,10 +19,12 @@ public class ChildService {
 
     @Autowired
     UserService userService;
+    @Autowired
+    PublicService publicService;
 
 
     public ResponseEntity<Child> saveChild(Child child) {
-        child.setParent(userService.getCurrentUsr());
+        child.setParent(publicService.getCurrentUsr());
         childRepo.save(child);
         return new ResponseEntity<Child>(HttpStatus.OK);
     }

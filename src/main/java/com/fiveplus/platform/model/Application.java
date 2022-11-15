@@ -1,5 +1,6 @@
 package com.fiveplus.platform.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "applications")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Application {
@@ -27,6 +29,7 @@ public class Application {
     private Date finish_less;
     private int dlitT;
     private int dlitP;
+    @Enumerated(EnumType.STRING)
     private LessonType type;
     @OneToOne
     @JoinColumn(name = "chat_id")

@@ -1,6 +1,7 @@
 package com.fiveplus.platform.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table(name = "children")
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 @Setter
 public class Child {
 
@@ -26,5 +28,6 @@ public class Child {
     private String photo;
     @OneToMany(mappedBy = "child")
     private Set<Application> applications;
+    private int klass;
 }
 

@@ -1,8 +1,10 @@
 package com.fiveplus.platform.service;
 
-import com.fiveplus.platform.model.LoginData;
-import com.fiveplus.platform.model.Role;
-import com.fiveplus.platform.model.User;
+import com.fiveplus.platform.helpModels.StartProfile;
+import com.fiveplus.platform.model.*;
+import com.fiveplus.platform.helpModels.LoginData;
+import com.fiveplus.platform.repository.ChildRepo;
+import com.fiveplus.platform.repository.PurchaseRepo;
 import com.fiveplus.platform.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,12 +32,18 @@ public class UserService implements UserDetailsService {
     private final UserRepo userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final ChildRepo childRepo;
+    private PurchaseService purchaseService;
+    private PublicService publicService;
 
     @Autowired
-    public UserService(UserRepo userRepository, RoleService roleService, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(UserRepo userRepository, RoleService roleService, @Lazy PasswordEncoder passwordEncoder, ChildRepo childRepo, PurchaseService purchaseService, PublicService publicService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.childRepo = childRepo;
+        this.purchaseService = purchaseService;
+        this.publicService = publicService;
     }
 
     @Override
@@ -49,13 +58,43 @@ public class UserService implements UserDetailsService {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
-    public ResponseEntity<User> updateUsr(User user, Long id){
+    public ResponseEntity<User> startUpdateUsr(StartProfile data, Long id){
+        try {
+            User usr = userRepository.findById(id).get();
+            usr.setFirstName(data.getParent().getFirstName());
+            usr.setImage(data.getParent().getImage());
+            usr.setLastName(data.getParent().getLastName());
+            usr.setFullName(data.getParent().getFirstName() + " " + data.getParent().getLastName());
+            usr.setPhoneNumber(data.getParent().getPhoneNumber());
+            userRepository.save(usr);
+            Child chl = new Child();
+            chl.setName(data.getFirstChild().getName());
+            chl.setParent(usr);
+            chl.setKlass(data.getFirstChild().getKlass());
+            childRepo.save(chl);
+            Purchase pur1 = new Purchase(0, LessonType.NACHALKA, publicService.getCurrentUsr());
+            Purchase pur2 = new Purchase(0, LessonType.HOMEWORK_DAY, publicService.getCurrentUsr());
+            Purchase pur3 = new Purchase(0, LessonType.OST_MIN, publicService.getCurrentUsr());
+            purchaseService.addPurchase(pur1);
+            purchaseService.addPurchase(pur2);
+            purchaseService.addPurchase(pur3);
+            return new ResponseEntity<User>(usr, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<User> editProfile(User user, Long id){
         try {
             User usr = userRepository.findById(id).get();
             usr.setFirstName(user.getFirstName());
             usr.setLastName(user.getLastName());
-            usr.setFullName(user.getFullName());
+            usr.setImage(user.getImage());
+            usr.setFullName(user.getFirstName() + " " +user.getLastName());
             usr.setEmail(user.getEmail());
+            usr.setImage(user.getImage());
+            usr.setPhoneNumber(user.getPhoneNumber());
             userRepository.save(usr);
             return new ResponseEntity<User>(usr, HttpStatus.OK);
         }catch (Exception e){
@@ -65,11 +104,6 @@ public class UserService implements UserDetailsService {
 
     public void deleteUsr(User user){
         userRepository.delete(user);
-    }
-
-    public User getCurrentUsr(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-     return  userRepository.findByEmail(authentication.getName()).stream().findFirst().get();
     }
 
     public User registerUsrParent(LoginData loginDto){
